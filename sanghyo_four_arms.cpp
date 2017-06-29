@@ -232,28 +232,37 @@ bool MultiPort::loadDynamixel()
                                                        dynamixel_info_[TILT]->lode_info.baud_rate,
                                                        dynamixel_info_[TILT]->lode_info.protocol_version);
 */
-    pan_driver_  = new dynamixel_driver::DynamixelDriver(dynamixel_info_[PAN]->lode_info.device_name,
-                                                   dynamixel_info_[PAN]->lode_info.baud_rate,
-                                                   dynamixel_info_[PAN]->lode_info.protocol_version);
+    motor1_driver_  = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR1]->lode_info.device_name,
+                                                   dynamixel_info_[MOTOR1]->lode_info.baud_rate,
+                                                   dynamixel_info_[MOTOR1]->lode_info.protocol_version);
 
-    tilt_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[TILT]->lode_info.device_name,
-                                                   dynamixel_info_[TILT]->lode_info.baud_rate,
-                                                   dynamixel_info_[TILT]->lode_info.protocol_version);
+    motor2_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR2]->lode_info.device_name,
+                                                   dynamixel_info_[MOTOR2]->lode_info.baud_rate,
+                                                   dynamixel_info_[MOTOR2]->lode_info.protocol_version);
 
-    pan_driver_  = new dynamixel_driver::DynamixelDriver(dynamixel_info_[PAN]->lode_info.device_name,
-                                                   dynamixel_info_[PAN]->lode_info.baud_rate,
-                                                   dynamixel_info_[PAN]->lode_info.protocol_version);
+    motor3_driver_  = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR3]->lode_info.device_name,
+                                                   dynamixel_info_[MOTOR3]->lode_info.baud_rate,
+                                                   dynamixel_info_[MOTOR3]->lode_info.protocol_version);
 
-    tilt_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[TILT]->lode_info.device_name,
-                                                   dynamixel_info_[TILT]->lode_info.baud_rate,
-                                                   dynamixel_info_[TILT]->lode_info.protocol_version);
+    motor4_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR4]->lode_info.device_name,
+                                                   dynamixel_info_[MOTOR4]->lode_info.baud_rate,
+                                                   dynamixel_info_[MOTOR4]->lode_info.protocol_version);
     
 
+    // original
+    /*
   ret = pan_driver_ ->ping(dynamixel_info_[PAN]->model_id);
   ret = tilt_driver_->ping(dynamixel_info_[TILT]->model_id);
-
+*/
+    
+  ret = motor1_driver_->ping(dynamixel_info_[MOTOR1]->model_id);
+  ret = motor2_driver_->ping(dynamixel_info_[MOTOR2]->model_id);
+  ret = motor3_driver_->ping(dynamixel_info_[MOTOR3]->model_id);
+  ret = motor4_driver_->ping(dynamixel_info_[MOTOR4]->model_id);
+    
   if (ret)
   {
+      //    original
     dynamixel_info_[PAN] ->model_name  = pan_driver_->dynamixel_->model_name_.c_str();
     dynamixel_info_[TILT]->model_name  = tilt_driver_->dynamixel_->model_name_.c_str();
   }
