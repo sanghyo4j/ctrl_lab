@@ -263,8 +263,16 @@ bool MultiPort::loadDynamixel()
   if (ret)
   {
       //    original
+      /*
     dynamixel_info_[PAN] ->model_name  = pan_driver_->dynamixel_->model_name_.c_str();
     dynamixel_info_[TILT]->model_name  = tilt_driver_->dynamixel_->model_name_.c_str();
+    */
+      
+    dynamixel_info_[MOTOR1]->model_name  = motor1_driver_->dynamixel_->model_name_.c_str();
+    dynamixel_info_[MOTOR2]->model_name  = motor2_driver_->dynamixel_->model_name_.c_str();
+    dynamixel_info_[MOTOR3]->model_name  = motor3_driver_->dynamixel_->model_name_.c_str();
+    dynamixel_info_[MOTOR4]->model_name  = motor4_driver_->dynamixel_->model_name_.c_str();
+      
   }
 
  return ret;
@@ -276,6 +284,8 @@ bool MultiPort::setTorque(bool onoff)
   writeValue_->torque.push_back(onoff);
   writeValue_->torque.push_back(onoff);
 
+    // original
+    /*
   if (!pan_driver_->writeRegister("torque_enable", writeValue_->torque.at(PAN)))
   {
     ROS_ERROR("Write Pan Torque Failed!");
@@ -287,29 +297,82 @@ bool MultiPort::setTorque(bool onoff)
     ROS_ERROR("Write Tilt Torque Failed!");
     return false;
   }
+  */
+    
+    if (!motor1_driver_->writeRegister("torque_enable", writeValue_->torque.at(MOTOR1))) {
+        ROS_ERROR("Write Motor 1 Torque Failed!");
+        return false;
+    }
 
+    if (!motor2_driver_->writeRegister("torque_enable", writeValue_->torque.at(MOTOR2))) {
+        ROS_ERROR("Write Motor 2 Torque Failed!");
+        return false;  
+    }  
+
+    if (!motor3_driver_->writeRegister("torque_enable", writeValue_->torque.at(MOTOR3))) {
+        ROS_ERROR("Write Motor 3 Torque Failed!");
+        return false;
+    }
+
+    if (!motor4_driver_->writeRegister("torque_enable", writeValue_->torque.at(MOTOR4))) {
+        ROS_ERROR("Write Motor 4 Torque Failed!");
+        return false;
+    }
   return true;
 }
 
-bool MultiPort::setPosition(uint32_t pan_pos, uint32_t tilt_pos)
-{
-  writeValue_->pos.clear();
-  writeValue_->pos.push_back(pan_pos);
-  writeValue_->pos.push_back(tilt_pos);
-
-  if (!pan_driver_->writeRegister("goal_position", writeValue_->pos.at(PAN)))
-  {
+// original
+// bool MultiPort::setPosition(uint32_t pan_pos, uint32_t tilt_pos)
+bool MultiPort::setPosition(uint32_t motor1_pos, uint32_t motor2_pos, uint32_t motor3_pos, uint32_t motor4_pos) {
+    writeValue_->pos.clear();
+    
+    // original 
+    /*
+    writeValue_->pos.push_back(pan_pos);
+    writeValue_->pos.push_back(tilt_pos);
+    */
+    
+    writeValue_->pos.push_back(motor1_pos);
+    writeValue_->pos.push_back(motor2_pos);
+    writeValue_->pos.push_back(motor3_pos);
+    writeValue_->pos.push_back(motor4_pos);
+    
+    
+    // original
+    /*
+    if (!pan_driver_->writeRegister("goal_position", writeValue_->pos.at(PAN)))
+    {
     ROS_ERROR("Write Pan Position Failed!");
     return false;
-  }
+    }
 
-  if (!tilt_driver_->writeRegister("goal_position", writeValue_->pos.at(TILT)))
-  {
+    if (!tilt_driver_->writeRegister("goal_position", writeValue_->pos.at(TILT)))
+    {
     ROS_ERROR("Write Tilt Position Failed!");
     return false;
-  }
+    }
+    */
+    
+    if (!motor1_driver_->writeRegister("goal_position", writeValue_->pos.at(MOTOR1)))   {
+        ROS_ERROR("Write Motor 1 Position Failed!");
+        return false;
+    }
 
-  return true;
+    if (!motor2_driver_->writeRegister("goal_position", writeValue_->pos.at(MOTOR2)))  {
+        ROS_ERROR("Write Motor 2 Position Failed!");
+        return false;
+    }    
+    
+    if (!motor3_driver_->writeRegister("goal_position", writeValue_->pos.at(MOTOR3)))  {
+        ROS_ERROR("Write Motor 3 Position Failed!");
+        return false;
+    }
+
+    if (!motor4_driver_->writeRegister("goal_position", writeValue_->pos.at(MOTOR4))) {
+        ROS_ERROR("Write Motor 4 Position Failed!");
+        return false;
+    }
+    return true;
 }
 
 bool MultiPort::checkLoadDynamixel()
@@ -318,15 +381,25 @@ bool MultiPort::checkLoadDynamixel()
     ROS_INFO("       dynamixel_workbench controller; 4-axis position control     ");
     ROS_INFO("             for control laboratory by Sanghyo Jeong               ");
     ROS_INFO("-------------------------------------------------------------------");
-    ROS_INFO("PAN MOTOR INFO");
-    ROS_INFO("Device Name    : %s", dynamixel_info_[PAN]->lode_info.device_name.c_str());
-    ROS_INFO("ID             : %d", dynamixel_info_[PAN]->model_id);
-    ROS_INFO("MODEL          : %s", dynamixel_info_[PAN]->model_name.c_str());
+    ROS_INFO("MOTOR 1 INFO");
+    ROS_INFO("Device Name    : %s", dynamixel_info_[MOTOR1]->lode_info.device_name.c_str());
+    ROS_INFO("ID             : %d", dynamixel_info_[MOTOR1]->model_id);
+    ROS_INFO("MODEL          : %s", dynamixel_info_[MOTOR1]->model_name.c_str());
     ROS_INFO(" ");
-    ROS_INFO("TILT MOTOR INFO");
-    ROS_INFO("Device Name    : %s", dynamixel_info_[TILT]->lode_info.device_name.c_str());
-    ROS_INFO("ID             : %d", dynamixel_info_[TILT]->model_id);
-    ROS_INFO("MODEL          : %s", dynamixel_info_[TILT]->model_name.c_str());
+    ROS_INFO("MOTOR 2 INFO");
+    ROS_INFO("Device Name    : %s", dynamixel_info_[MOTOR2]->lode_info.device_name.c_str());
+    ROS_INFO("ID             : %d", dynamixel_info_[MOTOR2]->model_id);
+    ROS_INFO("MODEL          : %s", dynamixel_info_[MOTOR2]->model_name.c_str());
+    ROS_INFO(" ");
+    ROS_INFO("MOTOR 3 INFO");
+    ROS_INFO("Device Name    : %s", dynamixel_info_[MOTOR3]->lode_info.device_name.c_str());
+    ROS_INFO("ID             : %d", dynamixel_info_[MOTOR3]->model_id);
+    ROS_INFO("MODEL          : %s", dynamixel_info_[MOTOR3]->model_name.c_str());
+    ROS_INFO(" ");
+    ROS_INFO("MOTOR 4 INFO");
+    ROS_INFO("Device Name    : %s", dynamixel_info_[MOTOR4]->lode_info.device_name.c_str());
+    ROS_INFO("ID             : %d", dynamixel_info_[MOTOR4]->model_id);
+    ROS_INFO("MODEL          : %s", dynamixel_info_[MOTOR4]->model_name.c_str());
 //    ROS_INFO(" ");
 //    ROS_INFO("Profile Velocity     : %d", profile_velocity_);
 //    ROS_INFO("Profile Acceleration : %d", profile_acceleration_); // I will add these paramater later.
@@ -336,8 +409,16 @@ bool MultiPort::checkLoadDynamixel()
 
 bool MultiPort::initDynamixelStatePublisher()
 {
+     // original 
+    /*
   pan_state_pub_  = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/multi_port/pan_state", 10);
   tilt_state_pub_ = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/multi_port/tilt_state", 10);
+  */
+    
+  motor1_state_pub_ = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/multi_port/motor1_state", 10);
+  motor2_state_pub_ = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/multi_port/motor2_state", 10);
+  motor3_state_pub_ = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/multi_port/motor3_state", 10);
+  motor4_state_pub_ = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/multi_port/motor4_state", 10);
 }
 
 bool MultiPort::initDynamixelInfoServer()
@@ -347,18 +428,38 @@ bool MultiPort::initDynamixelInfoServer()
 
 bool MultiPort::readValue(uint8_t motor, std::string addr_name)
 {
-  int32_t read_value;
+    int32_t read_value;
 
-  if (motor == PAN)
-  {
-    pan_driver_->readRegister(addr_name, &read_value);
-    pan_data_[addr_name] = read_value;
-  }
-  else if (motor == TILT)
-  {
-    tilt_driver_->readRegister(addr_name, &read_value);
-    tilt_data_[addr_name] = read_value;
-  }
+    // original
+    /*
+    if (motor == PAN)
+    {
+        pan_driver_->readRegister(addr_name, &read_value);
+        pan_data_[addr_name] = read_value;
+    }
+    else if (motor == TILT)
+    {
+        tilt_driver_->readRegister(addr_name, &read_value);
+        tilt_data_[addr_name] = read_value;
+    }
+  
+    */  
+    if (motor == MOTOR1) {
+        motor1_driver_->readRegister(addr_name, &read_value);
+        motor1_data_[addr_name] = read_value;
+    } 
+    else if (motor == MOTOR2) {
+        motor2_driver_->readRegister(addr_name, &read_value);
+        motor2_data_[addr_name] = read_value;
+    } 
+    else if (motor == MOTOR3) {
+        motor3_driver_->readRegister(addr_name, &read_value);
+        motor3_data_[addr_name] = read_value;
+    } 
+    else if (motor == MOTOR4) {
+        motor4_driver_->readRegister(addr_name, &read_value);
+        motor4_data_[addr_name] = read_value;
+    }
 }
 
 bool MultiPort::readDynamixelState(uint8_t motor)
