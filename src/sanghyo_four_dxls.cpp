@@ -1,7 +1,7 @@
 /* Authors: Taehoon Lim (Darby) */
 /* Editor: Sanghyo Jeong */
 
-#include "dynamixel_workbench_controllers/sanghyo_four_arms.h"
+#include "dynamixel_workbench_controllers/sanghyo_four_dxls.h"
 
 using namespace multi_port;
 
