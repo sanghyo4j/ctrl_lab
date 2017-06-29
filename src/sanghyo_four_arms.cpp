@@ -608,39 +608,56 @@ bool MultiPort::dynamixelStatePublish(uint8_t motor)
 
 uint32_t MultiPort::convertRadian2Value(uint8_t motor, float radian)
 {
-  uint32_t value = 0;
-  dynamixel_driver::DynamixelDriver* dynamixel_driver;
+	uint32_t value = 0;
+	dynamixel_driver::DynamixelDriver* dynamixel_driver;
 
-  if (motor == PAN)
-    dynamixel_driver = pan_driver_;
-  else if (motor == TILT)
-    dynamixel_driver = tilt_driver_;
+	// original 
+	/*
+	if (motor == PAN)
+		dynamixel_driver = pan_driver_;
+	else if (motor == TILT)
+		dynamixel_driver = tilt_driver_;
+	*/
 
-  if (radian > 0)
-  {
-    if (dynamixel_driver->dynamixel_->value_of_max_radian_position_ <= dynamixel_driver->dynamixel_->value_of_0_radian_position_)
-      return dynamixel_driver->dynamixel_->value_of_max_radian_position_;
+	if (motor == MOTOR1) {
+		dynamixel_driver = motor1_driver_;
+	}
+	else if (motor == MOTOR2) {
+		dynamixel_driver = motor2_driver_;
+	}
+	else if (motor == MOTOR3) {
+		dynamixel_driver = motor3_driver_;
+	}
+	else if (motor == MOTOR4) {
+		dynamixel_driver = motor4_driver_;
+	}
 
-    value = (radian * (dynamixel_driver->dynamixel_->value_of_max_radian_position_ - dynamixel_driver->dynamixel_->value_of_0_radian_position_) / dynamixel_driver->dynamixel_->max_radian_)
-                + dynamixel_driver->dynamixel_->value_of_0_radian_position_;
-  }
-  else if (radian < 0)
-  {
-    if (dynamixel_driver->dynamixel_->value_of_min_radian_position_ >= dynamixel_driver->dynamixel_->value_of_0_radian_position_)
-      return dynamixel_driver->dynamixel_->value_of_min_radian_position_;
 
-    value = (radian * (dynamixel_driver->dynamixel_->value_of_min_radian_position_ - dynamixel_driver->dynamixel_->value_of_0_radian_position_) / dynamixel_driver->dynamixel_->min_radian_)
-                + dynamixel_driver->dynamixel_->value_of_0_radian_position_;
-  }
-  else
-    value = dynamixel_driver->dynamixel_->value_of_0_radian_position_;
+	if (radian > 0)
+	{
+	if (dynamixel_driver->dynamixel_->value_of_max_radian_position_ <= dynamixel_driver->dynamixel_->value_of_0_radian_position_)
+		return dynamixel_driver->dynamixel_->value_of_max_radian_position_;
 
-//  if (value > multi_driver_->multi_dynamixel_[MOTOR]->value_of_max_radian_position_)
-//    return multi_driver_->multi_dynamixel_[MOTOR]->value_of_max_radian_position_;
-//  else if (value < multi_driver_->multi_dynamixel_[MOTOR]->value_of_min_radian_position_)
-//    return multi_driver_->multi_dynamixel_[MOTOR]->value_of_min_radian_position_;
+	value = (radian * (dynamixel_driver->dynamixel_->value_of_max_radian_position_ - dynamixel_driver->dynamixel_->value_of_0_radian_position_) / dynamixel_driver->dynamixel_->max_radian_)
+				+ dynamixel_driver->dynamixel_->value_of_0_radian_position_;
+	}
+	else if (radian < 0)
+	{
+	if (dynamixel_driver->dynamixel_->value_of_min_radian_position_ >= dynamixel_driver->dynamixel_->value_of_0_radian_position_)
+		return dynamixel_driver->dynamixel_->value_of_min_radian_position_;
 
-  return value;
+	value = (radian * (dynamixel_driver->dynamixel_->value_of_min_radian_position_ - dynamixel_driver->dynamixel_->value_of_0_radian_position_) / dynamixel_driver->dynamixel_->min_radian_)
+				+ dynamixel_driver->dynamixel_->value_of_0_radian_position_;
+	}
+	else
+		value = dynamixel_driver->dynamixel_->value_of_0_radian_position_;
+
+	//  if (value > multi_driver_->multi_dynamixel_[MOTOR]->value_of_max_radian_position_)
+	//    return multi_driver_->multi_dynamixel_[MOTOR]->value_of_max_radian_position_;
+	//  else if (value < multi_driver_->multi_dynamixel_[MOTOR]->value_of_min_radian_position_)
+	//    return multi_driver_->multi_dynamixel_[MOTOR]->value_of_min_radian_position_;
+
+	return value;
 }
 
 bool MultiPort::controlLoop()
