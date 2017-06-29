@@ -662,36 +662,77 @@ uint32_t MultiPort::convertRadian2Value(uint8_t motor, float radian)
 
 bool MultiPort::controlLoop()
 {
-  dynamixelStatePublish(PAN);
-  dynamixelStatePublish(TILT);
+	//original
+	/*
+	dynamixelStatePublish(PAN);
+	dynamixelStatePublish(TILT);
+	*/
+	dynamixelStatePublish(MOTOR1);
+	dynamixelStatePublish(MOTOR2);
+	dynamixelStatePublish(MOTOR3);
+	dynamixelStatePublish(MOTOR4);
 }
 
 bool MultiPort::jointCommandMsgCallback(dynamixel_workbench_msgs::JointCommand::Request &req,
                                               dynamixel_workbench_msgs::JointCommand::Response &res)
 {
+	//original
+	/*
   uint32_t pan_pos = 0;
   uint32_t tilt_pos = 0;
+  */
+	uint32_t motor1_pos = 0;
+	uint32_t motor2_pos = 0;
+	uint32_t motor3_pos = 0;
+	uint32_t motor4_pos = 0;
 
-  if (req.unit == "rad")
-  {
-    pan_pos = convertRadian2Value(PAN, req.pan_pos);
-    tilt_pos = convertRadian2Value(TILT, req.tilt_pos);
-  }
-  else if (req.unit == "raw")
-  {
-    pan_pos = req.pan_pos;
-    tilt_pos = req.tilt_pos;
-  }
-  else
-  {
-    pan_pos = req.pan_pos;
-    tilt_pos = req.tilt_pos;
-  }
+	if (req.unit == "rad")	{
+		// original
+		/*
+		pan_pos = convertRadian2Value(PAN, req.pan_pos);
+		tilt_pos = convertRadian2Value(TILT, req.tilt_pos);
+		*/
+		motor1_pos = convertRadian2Value(MOTOR1, req.motor1_pos);
+		motor2_pos = convertRadian2Value(MOTOR2, req.motor2_pos);
+		motor3_pos = convertRadian2Value(MOTOR3, req.motor3_pos);
+		motor4_pos = convertRadian2Value(MOTOR4, req.motor4_pos);
+	}
+	else if (req.unit == "raw")	{
+		// original
+		/*
+		pan_pos = req.pan_pos;
+		tilt_pos = req.tilt_pos;
+		*/
+		motor1_pos = req.motor1_pos;
+		motor2_pos = req.motor2_pos;
+		motor3_pos = req.motor3_pos;
+		motor4_pos = req.motor4_pos;
+	}
+	else {
+		// original
+		/*
+		pan_pos = req.pan_pos;
+		tilt_pos = req.tilt_pos;
+		*/
+		motor1_pos = req.motor1_pos;
+		motor2_pos = req.motor2_pos;
+		motor3_pos = req.motor3_pos;
+		motor4_pos = req.motor4_pos;
+	}
 
-  setPosition(pan_pos, tilt_pos);
-
-  res.pan_pos = pan_pos;
-  res.tilt_pos = tilt_pos;
+	// original 
+	//setPosition(pan_pos, tilt_pos);
+	setPosition(motor1_pos, motor2_pos, motor3_pos, motor4_pos);
+	
+	// original
+	/*
+	res.pan_pos = pan_pos;
+	res.tilt_pos = tilt_pos;
+	*/
+	res.motor1_pos = motor1_pos;
+	res.motor2_pos = motor2_pos;
+	res.motor3_pos = motor3_pos;
+	res.motor4_pos = motor4_pos;
 }
 
 int main(int argc, char **argv)
