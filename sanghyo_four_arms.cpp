@@ -30,8 +30,8 @@ namespace multi_port
 
 typedef struct
 {
-  std::vector<uint8_t>  torque;
-  std::vector<uint32_t> pos;
+    std::vector<uint8_t>  torque;
+    std::vector<uint32_t> pos;
 }WriteValue;
 
 class MultiPort
@@ -85,27 +85,27 @@ class MultiPort
   std::map<std::string, int32_t> motor4_data_;
 
  public:
-  MultiPort();
-  ~MultiPort();
-  bool controlLoop(void);
+    MultiPort();
+    ~MultiPort();
+    bool controlLoop(void);
 
  private:
-  bool loadDynamixel();
-  bool checkLoadDynamixel();
-  bool initDynamixelStatePublisher();
-  bool initDynamixelInfoServer();
+    bool loadDynamixel();
+    bool checkLoadDynamixel();
+    bool initDynamixelStatePublisher();
+    bool initDynamixelInfoServer();
 
-  bool setTorque(bool onoff);
-//  bool setPosition(uint32_t pan_pos, uint32_t tilt_pos); // original
-  bool setPosition(uint32_t motor1_pos, uint32_t motor2_pos, uint32_t motor3_pos, uint32_t motor4_pos);
+    bool setTorque(bool onoff);
+    //  bool setPosition(uint32_t pan_pos, uint32_t tilt_pos); // original
+    bool setPosition(uint32_t motor1_pos, uint32_t motor2_pos, uint32_t motor3_pos, uint32_t motor4_pos);
 
-  bool readValue(uint8_t motor, std::string addr_name);
-  bool readDynamixelState(uint8_t motor);
-  bool dynamixelStatePublish(uint8_t motor);
+    bool readValue(uint8_t motor, std::string addr_name);
+    bool readDynamixelState(uint8_t motor);
+    bool dynamixelStatePublish(uint8_t motor);
 
-  uint32_t convertRadian2Value(uint8_t motor, float radian);
+    uint32_t convertRadian2Value(uint8_t motor, float radian);
 
-  bool jointCommandMsgCallback(dynamixel_workbench_msgs::JointCommand::Request &req,
+    bool jointCommandMsgCallback(dynamixel_workbench_msgs::JointCommand::Request &req,
                                dynamixel_workbench_msgs::JointCommand::Response &res);
 };
 }
@@ -202,26 +202,28 @@ bool MultiPort::loadDynamixel()
     // the parameters of third motor.
     dynamixel_driver::DynamixelInfo *motor1_info = new dynamixel_driver::DynamixelInfo;
 
-    motor1_info->lode_info.device_name      = node_handle_.param<std::string>("pan/device_name", "/dev/ttyUSB0");
-    motor1_info->lode_info.baud_rate        = node_handle_.param<int>("pan/baud_rate", 57600);
-    motor1_info->lode_info.protocol_version = node_handle_.param<float>("pan/protocol_version", 2.0);
+    motor3_info->lode_info.device_name      = node_handle_.param<std::string>("pan/device_name", "/dev/ttyUSB0");
+    motor3_info->lode_info.baud_rate        = node_handle_.param<int>("pan/baud_rate", 57600);
+    motor3_info->lode_info.protocol_version = node_handle_.param<float>("pan/protocol_version", 2.0);
 
-    motor1_info->model_id                   = node_handle_.param<int>("pan/id", 1);
+    motor3_info->model_id                   = node_handle_.param<int>("pan/id", 1);
 
-    dynamixel_info_.push_back(motor1_info);
+    dynamixel_info_.push_back(motor3_info);
 
     // the parameters of fourth motor.
-    dynamixel_driver::DynamixelInfo *motor2_info = new dynamixel_driver::DynamixelInfo;
+    dynamixel_driver::DynamixelInfo *motor4_info = new dynamixel_driver::DynamixelInfo;
 
-    motor2_info->lode_info.device_name      = node_handle_.param<std::string>("tilt/device_name", "/dev/ttyUSB1");
-    motor2_info->lode_info.baud_rate        = node_handle_.param<int>("tilt/baud_rate", 57600);
-    motor2_info->lode_info.protocol_version = node_handle_.param<float>("tilt/protocol_version", 1.0);
+    motor4_info->lode_info.device_name      = node_handle_.param<std::string>("tilt/device_name", "/dev/ttyUSB1");
+    motor4_info->lode_info.baud_rate        = node_handle_.param<int>("tilt/baud_rate", 57600);
+    motor4_info->lode_info.protocol_version = node_handle_.param<float>("tilt/protocol_version", 1.0);
 
-    motor2_info->model_id                   = node_handle_.param<int>("tilt/id", 2);
+    motor4_info->model_id                   = node_handle_.param<int>("tilt/id", 2);
 
-    dynamixel_info_.push_back(motor2_info);
+    dynamixel_info_.push_back(motor4_info);
 
-
+    
+    // original source codes
+/*
   pan_driver_  = new dynamixel_driver::DynamixelDriver(dynamixel_info_[PAN]->lode_info.device_name,
                                                        dynamixel_info_[PAN]->lode_info.baud_rate,
                                                        dynamixel_info_[PAN]->lode_info.protocol_version);
@@ -229,6 +231,23 @@ bool MultiPort::loadDynamixel()
   tilt_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[TILT]->lode_info.device_name,
                                                        dynamixel_info_[TILT]->lode_info.baud_rate,
                                                        dynamixel_info_[TILT]->lode_info.protocol_version);
+*/
+    pan_driver_  = new dynamixel_driver::DynamixelDriver(dynamixel_info_[PAN]->lode_info.device_name,
+                                                   dynamixel_info_[PAN]->lode_info.baud_rate,
+                                                   dynamixel_info_[PAN]->lode_info.protocol_version);
+
+    tilt_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[TILT]->lode_info.device_name,
+                                                   dynamixel_info_[TILT]->lode_info.baud_rate,
+                                                   dynamixel_info_[TILT]->lode_info.protocol_version);
+
+    pan_driver_  = new dynamixel_driver::DynamixelDriver(dynamixel_info_[PAN]->lode_info.device_name,
+                                                   dynamixel_info_[PAN]->lode_info.baud_rate,
+                                                   dynamixel_info_[PAN]->lode_info.protocol_version);
+
+    tilt_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[TILT]->lode_info.device_name,
+                                                   dynamixel_info_[TILT]->lode_info.baud_rate,
+                                                   dynamixel_info_[TILT]->lode_info.protocol_version);
+    
 
   ret = pan_driver_ ->ping(dynamixel_info_[PAN]->model_id);
   ret = tilt_driver_->ping(dynamixel_info_[TILT]->model_id);
