@@ -39,7 +39,7 @@
     <param name="motor4/protocol_version" value="$(arg motor4_protocol_version)"/>
     <param name="motor4/id"               value="$(arg motor4_id)"/>
 
-    <node name="sanghyo_four_arms_example" pkg="dynamixel_workbench_controllers" type="sanghyo_four_arms" required="true" output="screen">
+    <node name="sanghyo_four_dxls_example" pkg="dynamixel_workbench_controllers" type="sanghyo_four_dxls" required="true" output="screen">
         <rosparam>
             profile_velocity: 50
             profile_acceleration: 5
