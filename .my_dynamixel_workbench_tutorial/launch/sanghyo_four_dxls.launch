@@ -1,6 +1,6 @@
 <launch>
     <arg name="motor1_device_name"      default="/dev/ttyUSB0"/>
-    <arg name="motor1_baud_rate"        default="57600"/>
+    <arg name="motor1_baud_rate"        default="1000000"/>
     <arg name="motor1_protocol_version" default="2.0"/>
     <arg name="motor1_id"               default="1"/>
 
