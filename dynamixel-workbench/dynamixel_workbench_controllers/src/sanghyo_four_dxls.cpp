@@ -115,21 +115,21 @@ bool MultiPort::loadDynamixel()
                                                        dynamixel_info_[TILT]->lode_info.baud_rate,
                                                        dynamixel_info_[TILT]->lode_info.protocol_version);
 */
-    motor1_driver_  = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR1]->lode_info.device_name,
-                                                   dynamixel_info_[MOTOR1]->lode_info.baud_rate,
-                                                   dynamixel_info_[MOTOR1]->lode_info.protocol_version);
+    motor1_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR1]->lode_info.device_name,
+							   dynamixel_info_[MOTOR1]->lode_info.baud_rate,
+							   dynamixel_info_[MOTOR1]->lode_info.protocol_version);
 
     motor2_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR2]->lode_info.device_name,
-                                                   dynamixel_info_[MOTOR2]->lode_info.baud_rate,
-                                                   dynamixel_info_[MOTOR2]->lode_info.protocol_version);
+							   dynamixel_info_[MOTOR2]->lode_info.baud_rate,
+							   dynamixel_info_[MOTOR2]->lode_info.protocol_version);
 
-    motor3_driver_  = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR3]->lode_info.device_name,
-                                                   dynamixel_info_[MOTOR3]->lode_info.baud_rate,
-                                                   dynamixel_info_[MOTOR3]->lode_info.protocol_version);
+    motor3_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR3]->lode_info.device_name,
+							   dynamixel_info_[MOTOR3]->lode_info.baud_rate,
+							   dynamixel_info_[MOTOR3]->lode_info.protocol_version);
 
     motor4_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR4]->lode_info.device_name,
-                                                   dynamixel_info_[MOTOR4]->lode_info.baud_rate,
-                                                   dynamixel_info_[MOTOR4]->lode_info.protocol_version);
+							   dynamixel_info_[MOTOR4]->lode_info.baud_rate,
+							   dynamixel_info_[MOTOR4]->lode_info.protocol_version);
     
 
     // original
