@@ -44,7 +44,6 @@ bool MultiPort::loadDynamixel()
   pan_info->lode_info.device_name      = node_handle_.param<std::string>("pan/device_name", "/dev/ttyUSB0");
   pan_info->lode_info.baud_rate        = node_handle_.param<int>("pan/baud_rate", 57600);
   pan_info->lode_info.protocol_version = node_handle_.param<float>("pan/protocol_version", 2.0);
-
   pan_info->model_id                   = node_handle_.param<int>("pan/id", 1);
 
   dynamixel_info_.push_back(pan_info);
@@ -54,7 +53,6 @@ bool MultiPort::loadDynamixel()
   tilt_info->lode_info.device_name      = node_handle_.param<std::string>("tilt/device_name", "/dev/ttyUSB1");
   tilt_info->lode_info.baud_rate        = node_handle_.param<int>("tilt/baud_rate", 57600);
   tilt_info->lode_info.protocol_version = node_handle_.param<float>("tilt/protocol_version", 1.0);
-
   tilt_info->model_id                   = node_handle_.param<int>("tilt/id", 2);
 
   dynamixel_info_.push_back(tilt_info);
@@ -63,44 +61,40 @@ bool MultiPort::loadDynamixel()
     // the parameters of first motor.
     dynamixel_driver::DynamixelInfo *motor1_info = new dynamixel_driver::DynamixelInfo;
 
-    motor1_info->lode_info.device_name      = node_handle_.param<std::string>("pan/device_name", "/dev/ttyUSB0");
-    motor1_info->lode_info.baud_rate        = node_handle_.param<int>("pan/baud_rate", 57600);
-    motor1_info->lode_info.protocol_version = node_handle_.param<float>("pan/protocol_version", 2.0);
-
-    motor1_info->model_id                   = node_handle_.param<int>("pan/id", 1);
+    motor1_info->lode_info.device_name      = node_handle_.param<std::string>("motor1/device_name", "/dev/ttyUSB0");
+    motor1_info->lode_info.baud_rate        = node_handle_.param<int>("motor1/baud_rate", 57600);
+    motor1_info->lode_info.protocol_version = node_handle_.param<float>("motor1/protocol_version", 2.0);
+    motor1_info->model_id                   = node_handle_.param<int>("motor1/id", 1);
 
     dynamixel_info_.push_back(motor1_info);
 
     // the parameters of second motor.
     dynamixel_driver::DynamixelInfo *motor2_info = new dynamixel_driver::DynamixelInfo;
 
-    motor2_info->lode_info.device_name      = node_handle_.param<std::string>("tilt/device_name", "/dev/ttyUSB1");
-    motor2_info->lode_info.baud_rate        = node_handle_.param<int>("tilt/baud_rate", 57600);
-    motor2_info->lode_info.protocol_version = node_handle_.param<float>("tilt/protocol_version", 1.0);
-
-    motor2_info->model_id                   = node_handle_.param<int>("tilt/id", 2);
+    motor2_info->lode_info.device_name      = node_handle_.param<std::string>("motor2/device_name", "/dev/ttyUSB0");
+    motor2_info->lode_info.baud_rate        = node_handle_.param<int>("motor2/baud_rate", 57600);
+    motor2_info->lode_info.protocol_version = node_handle_.param<float>("motor2/protocol_version", 1.0);
+    motor2_info->model_id                   = node_handle_.param<int>("motor2/id", 2);
 
     dynamixel_info_.push_back(motor2_info);
 
     // the parameters of third motor.
-    dynamixel_driver::DynamixelInfo *motor1_info = new dynamixel_driver::DynamixelInfo;
+    dynamixel_driver::DynamixelInfo *motor3_info = new dynamixel_driver::DynamixelInfo;
 
-    motor3_info->lode_info.device_name      = node_handle_.param<std::string>("pan/device_name", "/dev/ttyUSB0");
-    motor3_info->lode_info.baud_rate        = node_handle_.param<int>("pan/baud_rate", 57600);
-    motor3_info->lode_info.protocol_version = node_handle_.param<float>("pan/protocol_version", 2.0);
-
-    motor3_info->model_id                   = node_handle_.param<int>("pan/id", 1);
+    motor3_info->lode_info.device_name      = node_handle_.param<std::string>("motor3/device_name", "/dev/ttyUSB0");
+    motor3_info->lode_info.baud_rate        = node_handle_.param<int>("motor3/baud_rate", 57600);
+    motor3_info->lode_info.protocol_version = node_handle_.param<float>("motor3/protocol_version", 1.0);
+    motor3_info->model_id                   = node_handle_.param<int>("motor3/id", 3);
 
     dynamixel_info_.push_back(motor3_info);
 
     // the parameters of fourth motor.
     dynamixel_driver::DynamixelInfo *motor4_info = new dynamixel_driver::DynamixelInfo;
 
-    motor4_info->lode_info.device_name      = node_handle_.param<std::string>("tilt/device_name", "/dev/ttyUSB1");
-    motor4_info->lode_info.baud_rate        = node_handle_.param<int>("tilt/baud_rate", 57600);
-    motor4_info->lode_info.protocol_version = node_handle_.param<float>("tilt/protocol_version", 1.0);
-
-    motor4_info->model_id                   = node_handle_.param<int>("tilt/id", 2);
+    motor4_info->lode_info.device_name      = node_handle_.param<std::string>("motor4/device_name", "/dev/ttyUSB0");
+    motor4_info->lode_info.baud_rate        = node_handle_.param<int>("motor4/baud_rate", 57600);
+    motor4_info->lode_info.protocol_version = node_handle_.param<float>("motor4/protocol_version", 1.0);
+    motor4_info->model_id                   = node_handle_.param<int>("motor4/id", 4);
 
     dynamixel_info_.push_back(motor4_info);
 
@@ -115,21 +109,21 @@ bool MultiPort::loadDynamixel()
                                                        dynamixel_info_[TILT]->lode_info.baud_rate,
                                                        dynamixel_info_[TILT]->lode_info.protocol_version);
 */
-    motor1_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR1]->lode_info.device_name,
-							   dynamixel_info_[MOTOR1]->lode_info.baud_rate,
-							   dynamixel_info_[MOTOR1]->lode_info.protocol_version);
+    motor1_driver_  = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR1]->lode_info.device_name,
+                                                   dynamixel_info_[MOTOR1]->lode_info.baud_rate,
+                                                   dynamixel_info_[MOTOR1]->lode_info.protocol_version);
 
     motor2_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR2]->lode_info.device_name,
-							   dynamixel_info_[MOTOR2]->lode_info.baud_rate,
-							   dynamixel_info_[MOTOR2]->lode_info.protocol_version);
+                                                   dynamixel_info_[MOTOR2]->lode_info.baud_rate,
+                                                   dynamixel_info_[MOTOR2]->lode_info.protocol_version);
 
-    motor3_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR3]->lode_info.device_name,
-							   dynamixel_info_[MOTOR3]->lode_info.baud_rate,
-							   dynamixel_info_[MOTOR3]->lode_info.protocol_version);
+    motor3_driver_  = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR3]->lode_info.device_name,
+                                                   dynamixel_info_[MOTOR3]->lode_info.baud_rate,
+                                                   dynamixel_info_[MOTOR3]->lode_info.protocol_version);
 
     motor4_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR4]->lode_info.device_name,
-							   dynamixel_info_[MOTOR4]->lode_info.baud_rate,
-							   dynamixel_info_[MOTOR4]->lode_info.protocol_version);
+                                                   dynamixel_info_[MOTOR4]->lode_info.baud_rate,
+                                                   dynamixel_info_[MOTOR4]->lode_info.protocol_version);
     
 
     // original
@@ -363,7 +357,7 @@ bool MultiPort::readDynamixelState(uint8_t motor)
     else if (motor == MOTOR2){
         dynamixel_driver = motor2_driver_;
     }
-    elseif (motor == MOTOR3){
+    else if (motor == MOTOR3){
         dynamixel_driver = motor3_driver_;
     }
     else if (motor == MOTOR4){
@@ -479,13 +473,13 @@ bool MultiPort::dynamixelStatePublish(uint8_t motor)
         motor1_state_pub_.publish(dynamixel_state);
     }
     else if (motor == MOTOR2)    {
-        tilt_state_pub_.publish(dynamixel_state);
+        motor2_state_pub_.publish(dynamixel_state);
     }
     else if (motor == MOTOR3)    {
-        tilt_state_pub_.publish(dynamixel_state);
+        motor3_state_pub_.publish(dynamixel_state);
     }
     else if (motor == MOTOR4)    {
-        tilt_state_pub_.publish(dynamixel_state);
+        motor4_state_pub_.publish(dynamixel_state);
     }
 }
 
