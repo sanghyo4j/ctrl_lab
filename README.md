@@ -24,20 +24,21 @@ sudo apt-get install python-rosinstall
 ```
 이것으로 ROS 설치는 끝이 납니다.
 
-# 2. Dynamixel SDK를 설치하기 위하여 별도의 폴더 생성
+# 2. Dynamixel SDK를 설치
+-- 별도의 디렉토리를 생성해두면 편리합니다.
 ```
 mkdir ~/DynamixelSDK && cd ~/DynamixelSDK
 git clone https://github.com/ROBOTIS-GIT/DynamixelSDK.git
 ```
 
-# 3. catkin_workspace 생성 및 catkin_make 를 통한 src 폴더 생성
-다음 페이지를 보고 따라합시다.
+# 3. catkin_workspace
 http://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment
+> - 위 페이지를 보고 잘 따라합시다.
 
 # 4. Dynamixel SDK 설치
 https://github.com/ROBOTIS-GIT/DynamixelSDK/wiki/4.-SDK-Example
-해당 페이지에서 "4.1 C" 및 다음 페이지에서 "LINUX" 선택하여 절차 수행
-그냥 따라치기보다는 어떤 작업을 하고 있는지 **반드시 숙지**하도록 합시다.*
+> - 해당 페이지에서 "4.1 C" 및 다음 페이지에서 "LINUX" 선택하여 절차 수행
+> - 그냥 따라치기보다는 어떤 작업을 하고 있는지 **반드시 숙지**하도록 합시다.*
 	
 # 5. git에서 dymamixel code 받아오기 
 catkin_workspace/src/  하위에 적당한 폴더를 만듭시다.
@@ -56,8 +57,8 @@ cd ctrl_lab_git && git clone https://github.com/sh4j/ctrl_lab.git
 5에서 github에서 땡겨온 디렉토리 및 파일에 6번을 **덮어쓰기** 합시다.
 
 # 8. catkin_make
-먼저 launch파일이 들어있는 my* 디렉토리를 숨김처리 합시다.
-간단하게 디렉토리 명을 my* -> .my* 로 변경하면 됨.
+먼저 launch파일이 들어있는 my* 디렉토리를 숨김처리 합시다. catkin_make시 에러가 나기 때문입니다. 이런 귀찮은 작업을 생략할 수 있는 방법을 조만간 찾아보겠습니다. 우선은 임시방편으로 디렉토리 명을 변경해가면서 씁시다.
+간단하게 디렉토리 명을 my* -> .my* 로 변경하면 됩니다.
 콘솔에서의 파일/디렉토리 명 변경은 mv 입니다.
 익숙하지 않다면 GUI에서 바꾸어도 됩니다. 단축키는 F2.
 ```
@@ -70,5 +71,3 @@ mv .my* my*
 (다른 터미널 창에서) roslaunch workspace_name launch_file_name.launch
 
 # 10. error 발생시 알려주시기 바랍니다.
-
-> Written with [StackEdit](https://stackedit.io/).
