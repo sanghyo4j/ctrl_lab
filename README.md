@@ -39,8 +39,8 @@ Since 2017.06.28
 	간단하게 디렉토리 명을 my* -> .my* 로 변경하면 됨.
 	cd ~/catkin_workspace && catkin_make
 	
-9. launch 파일 실행
+9. launch 파일
 	(터미널 창에서) roscore
 	(다른 터미널 창에서) roslaunch workspace_name launch_file_name.launch
 
-10. error 발생시 알려주시기 바랍니다.
+10. error 발생시 신속하게 알려주시기 바랍니다.
