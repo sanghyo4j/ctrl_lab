@@ -7,3 +7,7 @@ This repository is for Control Laboratory in PNU and is being developed for Dyna
 Since 2017.06.28
 
 ------------------------------------------------------------------------------------------------------------------------------------
+
+순서
+
+1. ROS 설
