@@ -43,6 +43,7 @@ https://github.com/ROBOTIS-GIT/DynamixelSDK/wiki/4.-SDK-Example
 # 5. git에서 dymamixel code 받아오기 
 catkin_workspace/src/  하위에 적당한 폴더를 만듭시다.
 ```
+sudo apt-get install ros-indigo-qt-build
 git clone https://github.com/ROBOTIS-GIT/dynamixel-workbench.git
 git clone https://github.com/ROBOTIS-GIT/dynamixel-workbench-msgs.git
 cd ~/catkin_workspace/ && catkin_make
