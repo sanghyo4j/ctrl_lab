@@ -171,9 +171,10 @@ bool FourDxls::setPosition(uint32_t pan_pos, uint32_t tilt_pos, uint32_t motor3_
 
 bool FourDxls::checkLoadDynamixel()
 {
-  ROS_INFO("-----------------------------------------------------------------------");
-  ROS_INFO("  dynamixel_workbench controller; multi port example(Pan & Tilt)       ");
-  ROS_INFO("-----------------------------------------------------------------------");
+  ROS_INFO("-------------------------------------------");
+  ROS_INFO("        four dynamixel controller       ");
+  ROS_INFO("         made with Sanghyo jeong        ");
+  ROS_INFO("-------------------------------------------");
   ROS_INFO("PAN MOTOR INFO");
   ROS_INFO("Device Name    : %s", dynamixel_info_[PAN]->lode_info.device_name.c_str());
   ROS_INFO("ID             : %d", dynamixel_info_[PAN]->model_id);
@@ -193,7 +194,7 @@ bool FourDxls::checkLoadDynamixel()
   ROS_INFO("Device Name    : %s", dynamixel_info_[MOTOR4]->lode_info.device_name.c_str());
   ROS_INFO("ID             : %d", dynamixel_info_[MOTOR4]->model_id);
   ROS_INFO("MODEL          : %s", dynamixel_info_[MOTOR4]->model_name.c_str());
-  ROS_INFO("-----------------------------------------------------------------------");
+  ROS_INFO("-------------------------------------------");
 }
 
 bool FourDxls::initDynamixelStatePublisher()
@@ -225,13 +226,13 @@ bool FourDxls::readValue(uint8_t motor, std::string addr_name)
   }
   else if (motor == MOTOR3)
   {
-    tilt_driver_->readRegister(addr_name, &read_value);
-    tilt_data_[addr_name] = read_value;
+    motor3_driver_->readRegister(addr_name, &read_value);
+    motor3_data_[addr_name] = read_value;
   }
   else if (motor == MOTOR4)
   {
-    tilt_driver_->readRegister(addr_name, &read_value);
-    tilt_data_[addr_name] = read_value;
+    motor4_driver_->readRegister(addr_name, &read_value);
+    motor4_data_[addr_name] = read_value;
   }
 }
 
@@ -243,11 +244,13 @@ bool FourDxls::readDynamixelState(uint8_t motor)
     dynamixel_driver = pan_driver_;
   else if (motor == TILT)
     dynamixel_driver = tilt_driver_;
+  else if (motor == MOTOR3)
+    dynamixel_driver = motor3_driver_;
+  else if (motor == MOTOR4)
+    dynamixel_driver = motor4_driver_;
 
   readValue(motor, "torque_enable");
-
   readValue(motor, "present_position");
-
   readValue(motor, "goal_position");
   readValue(motor, "moving");
 
@@ -273,6 +276,8 @@ bool FourDxls::dynamixelStatePublish(uint8_t motor)
 {
   readDynamixelState(PAN);
   readDynamixelState(TILT);
+  readDynamixelState(MOTOR3);
+  readDynamixelState(MOTOR4);
 
   dynamixel_driver::DynamixelDriver*       dynamixel_driver;
   dynamixel_workbench_msgs::DynamixelState dynamixel_state;
@@ -288,6 +293,16 @@ bool FourDxls::dynamixelStatePublish(uint8_t motor)
   {
     dynamixel_driver = tilt_driver_;
     read_data        = tilt_data_;
+  }
+  else if (motor == MOTOR3)
+  {
+    dynamixel_driver = motor3_driver_;
+    read_data        = motor3_data_;
+  }
+  else if (motor == MOTOR4)
+  {
+    dynamixel_driver = motor4_driver_;
+    read_data        = motor4_data_;
   }
 
   dynamixel_state.model_name          = dynamixel_driver->dynamixel_->model_name_;
@@ -322,6 +337,14 @@ bool FourDxls::dynamixelStatePublish(uint8_t motor)
   {
     tilt_state_pub_.publish(dynamixel_state);
   }
+  else if (motor == MOTOR3)
+  {
+    motor3_state_pub_.publish(dynamixel_state);
+  }
+  else if (motor == MOTOR4)
+  {
+    motor4_state_pub_.publish(dynamixel_state);
+  }
 }
 
 uint32_t FourDxls::convertRadian2Value(uint8_t motor, float radian)
@@ -333,6 +356,10 @@ uint32_t FourDxls::convertRadian2Value(uint8_t motor, float radian)
     dynamixel_driver = pan_driver_;
   else if (motor == TILT)
     dynamixel_driver = tilt_driver_;
+  else if (motor == MOTOR3)
+    dynamixel_driver = motor3_driver_;
+  else if (motor == MOTOR4)
+    dynamixel_driver = motor4_driver_;
 
   if (radian > 0)
   {
@@ -365,6 +392,8 @@ bool FourDxls::controlLoop()
 {
   dynamixelStatePublish(PAN);
   dynamixelStatePublish(TILT);
+  dynamixelStatePublish(MOTOR3);
+  dynamixelStatePublish(MOTOR4);
 }
 
 bool FourDxls::jointCommandMsgCallback(dynamixel_workbench_msgs::JointCommand::Request &req,
@@ -372,27 +401,37 @@ bool FourDxls::jointCommandMsgCallback(dynamixel_workbench_msgs::JointCommand::R
 {
   uint32_t pan_pos = 0;
   uint32_t tilt_pos = 0;
+  uint32_t motor3_pos = 0;
+  uint32_t motor4_pos = 0;
 
   if (req.unit == "rad")
   {
     pan_pos = convertRadian2Value(PAN, req.pan_pos);
     tilt_pos = convertRadian2Value(TILT, req.tilt_pos);
+    motor3_pos = convertRadian2Value(MOTOR3, req.motor3_pos);
+    motor4_pos = convertRadian2Value(MOTOR4, req.motor4_pos);
   }
   else if (req.unit == "raw")
   {
     pan_pos = req.pan_pos;
     tilt_pos = req.tilt_pos;
+    motor3_pos = req.motor3_pos;
+    motor4_pos = req.motor4_pos;
   }
   else
   {
     pan_pos = req.pan_pos;
     tilt_pos = req.tilt_pos;
+    motor3_pos = req.motor3_pos;
+    motor4_pos = req.motor4_pos;
   }
 
-  setPosition(pan_pos, tilt_pos, pan_pos, tilt_pos); //uint32_t motor3_pos, uint32_t motor4_pos) ;
+  setPosition(pan_pos, tilt_pos, motor3_pos, motor4_pos);
 
   res.pan_pos = pan_pos;
   res.tilt_pos = tilt_pos;
+  res.motor3_pos = motor3_pos;
+  res.motor4_pos = motor4_pos;
 }
 
 int main(int argc, char **argv)
