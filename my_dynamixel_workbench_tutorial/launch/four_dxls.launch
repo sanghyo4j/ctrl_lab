@@ -2,22 +2,22 @@
   <arg name="pan_device_name"      default="/dev/ttyUSB0"/>
   <arg name="pan_baud_rate"        default="1000000"/>
   <arg name="pan_protocol_version" default="1.0"/>
-  <arg name="pan_id"               default="2"/>
+  <arg name="pan_id"               default="1"/>
 
   <arg name="tilt_device_name"      default="/dev/ttyUSB0"/>
   <arg name="tilt_baud_rate"        default="1000000"/>
   <arg name="tilt_protocol_version" default="1.0"/>
-  <arg name="tilt_id"               default="3"/>
+  <arg name="tilt_id"               default="2"/>
 
   <arg name="motor3_device_name"      default="/dev/ttyUSB0"/>
   <arg name="motor3_baud_rate"        default="1000000"/>
   <arg name="motor3_protocol_version" default="1.0"/>
-  <arg name="motor3_id"               default="2"/>
+  <arg name="motor3_id"               default="3"/>
 
   <arg name="motor4_device_name"      default="/dev/ttyUSB0"/>
   <arg name="motor4_baud_rate"        default="1000000"/>
   <arg name="motor4_protocol_version" default="1.0"/>
-  <arg name="motor4_id"               default="3"/>
+  <arg name="motor4_id"               default="4"/>
 
   <param name="pan/device_name"      value="$(arg pan_device_name)"/>
   <param name="pan/baud_rate"        value="$(arg pan_baud_rate)"/>
