@@ -54,6 +54,31 @@ bool FourDxls::loadDynamixel()
 
   dynamixel_info_.push_back(tilt_info);
 
+
+// added
+
+
+  dynamixel_driver::DynamixelInfo *motor3_info = new dynamixel_driver::DynamixelInfo;
+
+  tilt_info->lode_info.device_name      = node_handle_.param<std::string>("tilt/device_name", "/dev/ttyUSB1");
+  tilt_info->lode_info.baud_rate        = node_handle_.param<int>("tilt/baud_rate", 57600);
+  tilt_info->lode_info.protocol_version = node_handle_.param<float>("tilt/protocol_version", 1.0);
+
+  tilt_info->model_id                   = node_handle_.param<int>("tilt/id", 2);
+
+  dynamixel_info_.push_back(tilt_info);
+
+
+  dynamixel_driver::DynamixelInfo *motor4_info = new dynamixel_driver::DynamixelInfo;
+
+  tilt_info->lode_info.device_name      = node_handle_.param<std::string>("tilt/device_name", "/dev/ttyUSB1");
+  tilt_info->lode_info.baud_rate        = node_handle_.param<int>("tilt/baud_rate", 57600);
+  tilt_info->lode_info.protocol_version = node_handle_.param<float>("tilt/protocol_version", 1.0);
+
+  tilt_info->model_id                   = node_handle_.param<int>("tilt/id", 2);
+
+  dynamixel_info_.push_back(tilt_info);
+
   pan_driver_  = new dynamixel_driver::DynamixelDriver(dynamixel_info_[PAN]->lode_info.device_name,
                                                        dynamixel_info_[PAN]->lode_info.baud_rate,
                                                        dynamixel_info_[PAN]->lode_info.protocol_version);
