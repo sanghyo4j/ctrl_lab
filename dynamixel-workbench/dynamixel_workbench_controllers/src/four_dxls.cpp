@@ -66,18 +66,19 @@ bool FourDxls::loadDynamixel()
 
   motor3_info->model_id                   = node_handle_.param<int>("motor3/id", 2);
 
-  dynamixel_info_.push_back(tilt_info);
+  dynamixel_info_.push_back(motor3_info);
 
 
   dynamixel_driver::DynamixelInfo *motor4_info = new dynamixel_driver::DynamixelInfo;
 
-  tilt_info->lode_info.device_name      = node_handle_.param<std::string>("tilt/device_name", "/dev/ttyUSB1");
-  tilt_info->lode_info.baud_rate        = node_handle_.param<int>("tilt/baud_rate", 57600);
-  tilt_info->lode_info.protocol_version = node_handle_.param<float>("tilt/protocol_version", 1.0);
+  motor4_info->lode_info.device_name      = node_handle_.param<std::string>("motor4/device_name", "/dev/ttyUSB1");
+  motor4_info->lode_info.baud_rate        = node_handle_.param<int>("motor4/baud_rate", 57600);
+  motor4_info->lode_info.protocol_version = node_handle_.param<float>("motor4/protocol_version", 1.0);
 
-  tilt_info->model_id                   = node_handle_.param<int>("tilt/id", 2);
+  motor4_info->model_id                   = node_handle_.param<int>("motor4/id", 2);
 
-  dynamixel_info_.push_back(tilt_info);
+  dynamixel_info_.push_back(motor4_info);
+
 
   pan_driver_  = new dynamixel_driver::DynamixelDriver(dynamixel_info_[PAN]->lode_info.device_name,
                                                        dynamixel_info_[PAN]->lode_info.baud_rate,
@@ -87,13 +88,25 @@ bool FourDxls::loadDynamixel()
                                                        dynamixel_info_[TILT]->lode_info.baud_rate,
                                                        dynamixel_info_[TILT]->lode_info.protocol_version);
 
-  ret = pan_driver_ ->ping(dynamixel_info_[PAN]->model_id);
-  ret = tilt_driver_->ping(dynamixel_info_[TILT]->model_id);
+  motor3_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR3]->lode_info.device_name,
+                                                       dynamixel_info_[MOTOR3]->lode_info.baud_rate,
+                                                       dynamixel_info_[MOTOR3]->lode_info.protocol_version);
+
+  motor4_driver_ = new dynamixel_driver::DynamixelDriver(dynamixel_info_[MOTOR4]->lode_info.device_name,
+                                                       dynamixel_info_[MOTOR4]->lode_info.baud_rate,
+                                                       dynamixel_info_[MOTOR4]->lode_info.protocol_version);
+
+  ret = pan_driver_ -> ping(dynamixel_info_[PAN]->model_id);
+  ret = tilt_driver_-> ping(dynamixel_info_[TILT]->model_id);
+  ret = motor3_driver_ -> ping(dynamixel_info_[MOTOR3]->model_id);
+  ret = motor4_driver_ -> ping(dynamixel_info_[MOTOR4]->model_id);
 
   if (ret)
   {
     dynamixel_info_[PAN] ->model_name  = pan_driver_->dynamixel_->model_name_.c_str();
     dynamixel_info_[TILT]->model_name  = tilt_driver_->dynamixel_->model_name_.c_str();
+    dynamixel_info_[MOTOR3]->model_name = motor3_driver_->dynamixel_->model_name_.c_str();
+    dynamixel_info_[MOTOR4]->model_name = motor4_driver_->dynamixel_->model_name_.c_str();
   }
 
  return ret;
@@ -126,6 +139,8 @@ bool FourDxls::setPosition(uint32_t pan_pos, uint32_t tilt_pos, uint32_t motor3_
   writeValue_->pos.clear();
   writeValue_->pos.push_back(pan_pos);
   writeValue_->pos.push_back(tilt_pos);
+  writeValue_->pos.push_back(motor3_pos);
+  writeValue_->pos.push_back(motor4_pos);
 
   if (!pan_driver_->writeRegister("goal_position", writeValue_->pos.at(PAN)))
   {
@@ -136,6 +151,18 @@ bool FourDxls::setPosition(uint32_t pan_pos, uint32_t tilt_pos, uint32_t motor3_
   if (!tilt_driver_->writeRegister("goal_position", writeValue_->pos.at(TILT)))
   {
     ROS_ERROR("Write Tilt Position Failed!");
+    return false;
+  }
+
+  if (!motor3_driver_->writeRegister("goal_position", writeValue_->pos.at(MOTOR3)))
+  {
+    ROS_ERROR("Write MOTOR3 Position Failed!");
+    return false;
+  }
+
+  if (!motor4_driver_->writeRegister("goal_position", writeValue_->pos.at(MOTOR4)))
+  {
+    ROS_ERROR("Write MOTOR4 Position Failed!");
     return false;
   }
 
@@ -156,6 +183,16 @@ bool FourDxls::checkLoadDynamixel()
   ROS_INFO("Device Name    : %s", dynamixel_info_[TILT]->lode_info.device_name.c_str());
   ROS_INFO("ID             : %d", dynamixel_info_[TILT]->model_id);
   ROS_INFO("MODEL          : %s", dynamixel_info_[TILT]->model_name.c_str());
+  ROS_INFO(" ");
+  ROS_INFO("MOTOR3 INFO");
+  ROS_INFO("Device Name    : %s", dynamixel_info_[MOTOR3]->lode_info.device_name.c_str());
+  ROS_INFO("ID             : %d", dynamixel_info_[MOTOR3]->model_id);
+  ROS_INFO("MODEL          : %s", dynamixel_info_[MOTOR3]->model_name.c_str());
+  ROS_INFO(" ");
+  ROS_INFO("MOTOR4 INFO");
+  ROS_INFO("Device Name    : %s", dynamixel_info_[MOTOR4]->lode_info.device_name.c_str());
+  ROS_INFO("ID             : %d", dynamixel_info_[MOTOR4]->model_id);
+  ROS_INFO("MODEL          : %s", dynamixel_info_[MOTOR4]->model_name.c_str());
   ROS_INFO("-----------------------------------------------------------------------");
 }
 
@@ -163,6 +200,8 @@ bool FourDxls::initDynamixelStatePublisher()
 {
   pan_state_pub_  = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/multi_port/pan_state", 10);
   tilt_state_pub_ = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/multi_port/tilt_state", 10);
+  motor3_state_pub_  = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/multi_port/motor3_state", 10);
+  motor4_state_pub_ = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/multi_port/motor4_state", 10);
 }
 
 bool FourDxls::initDynamixelInfoServer()
@@ -183,6 +222,16 @@ bool FourDxls::readValue(uint8_t motor, std::string addr_name)
   {
     tilt_driver_->readRegister(addr_name, &read_value);
     tilt_data_[addr_name] = read_value;
+  }
+  else if (motor == MOTOR3)
+  {
+    motor3_driver_->readRegister(addr_name, &read_value);
+    motor3_data_[addr_name] = read_value;
+  }
+  else if (motor == MOTOR4)
+  {
+    motor4_driver_->readRegister(addr_name, &read_value);
+    motor4_data_[addr_name] = read_value;
   }
 }
 
