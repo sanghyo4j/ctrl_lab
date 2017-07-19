@@ -1,0 +1,16 @@
+# This message is used to send position command to dynamixel
+
+string unit
+float32 pan_pos
+float32 tilt_pos
+float32 motor1_pos
+float32 motor2_pos
+float32 motor3_pos
+float32 motor4_pos
+---
+float32 pan_pos
+float32 tilt_pos
+float32 motor1_pos
+float32 motor2_pos
+float32 motor3_pos
+float32 motor4_pos
