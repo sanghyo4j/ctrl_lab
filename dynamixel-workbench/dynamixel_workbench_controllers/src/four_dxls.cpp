@@ -60,11 +60,11 @@ bool FourDxls::loadDynamixel()
 
   dynamixel_driver::DynamixelInfo *motor3_info = new dynamixel_driver::DynamixelInfo;
 
-  tilt_info->lode_info.device_name      = node_handle_.param<std::string>("tilt/device_name", "/dev/ttyUSB1");
-  tilt_info->lode_info.baud_rate        = node_handle_.param<int>("tilt/baud_rate", 57600);
-  tilt_info->lode_info.protocol_version = node_handle_.param<float>("tilt/protocol_version", 1.0);
+  motor3_info->lode_info.device_name      = node_handle_.param<std::string>("motor3/device_name", "/dev/ttyUSB1");
+  motor3_info->lode_info.baud_rate        = node_handle_.param<int>("motor3/baud_rate", 57600);
+  motor3_info->lode_info.protocol_version = node_handle_.param<float>("motor3/protocol_version", 1.0);
 
-  tilt_info->model_id                   = node_handle_.param<int>("tilt/id", 2);
+  motor3_info->model_id                   = node_handle_.param<int>("motor3/id", 2);
 
   dynamixel_info_.push_back(tilt_info);
 
