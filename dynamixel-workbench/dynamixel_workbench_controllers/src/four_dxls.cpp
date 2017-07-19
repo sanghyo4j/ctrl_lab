@@ -199,10 +199,10 @@ bool FourDxls::checkLoadDynamixel()
 
 bool FourDxls::initDynamixelStatePublisher()
 {
-  pan_state_pub_  = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/multi_port/pan_state", 10);
-  tilt_state_pub_ = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/multi_port/tilt_state", 10);
-  motor3_state_pub_  = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/multi_port/motor3_state", 10);
-  motor4_state_pub_ = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/multi_port/motor4_state", 10);
+  pan_state_pub_    = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/kobuki_four_dxls/pan_state", 10);
+  tilt_state_pub_   = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/kobuki_four_dxls/tilt_state", 10);
+  motor3_state_pub_ = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/kobuki_four_dxls/motor3_state", 10);
+  motor4_state_pub_ = node_handle_.advertise<dynamixel_workbench_msgs::DynamixelState>("/kobuki_four_dxls/motor4_state", 10);
 }
 
 bool FourDxls::initDynamixelInfoServer()
