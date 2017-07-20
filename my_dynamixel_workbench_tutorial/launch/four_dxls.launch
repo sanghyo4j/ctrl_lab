@@ -1,0 +1,43 @@
+<launch>
+  <arg name="pan_device_name"      default="/dev/ttyUSB0"/>
+  <arg name="pan_baud_rate"        default="1000000"/>
+  <arg name="pan_protocol_version" default="1.0"/>
+  <arg name="pan_id"               default="1"/>
+
+  <arg name="tilt_device_name"      default="/dev/ttyUSB0"/>
+  <arg name="tilt_baud_rate"        default="1000000"/>
+  <arg name="tilt_protocol_version" default="1.0"/>
+  <arg name="tilt_id"               default="2"/>
+
+  <arg name="motor3_device_name"      default="/dev/ttyUSB0"/>
+  <arg name="motor3_baud_rate"        default="1000000"/>
+  <arg name="motor3_protocol_version" default="1.0"/>
+  <arg name="motor3_id"               default="3"/>
+
+  <arg name="motor4_device_name"      default="/dev/ttyUSB0"/>
+  <arg name="motor4_baud_rate"        default="1000000"/>
+  <arg name="motor4_protocol_version" default="1.0"/>
+  <arg name="motor4_id"               default="4"/>
+
+  <param name="pan/device_name"      value="$(arg pan_device_name)"/>
+  <param name="pan/baud_rate"        value="$(arg pan_baud_rate)"/>
+  <param name="pan/protocol_version" value="$(arg pan_protocol_version)"/>
+  <param name="pan/id"               value="$(arg pan_id)"/>
+
+  <param name="tilt/device_name"      value="$(arg tilt_device_name)"/>
+  <param name="tilt/baud_rate"        value="$(arg tilt_baud_rate)"/>
+  <param name="tilt/protocol_version" value="$(arg tilt_protocol_version)"/>
+  <param name="tilt/id"               value="$(arg tilt_id)"/>
+
+  <param name="motor3/device_name"      value="$(arg motor3_device_name)"/>
+  <param name="motor3/baud_rate"        value="$(arg motor3_baud_rate)"/>
+  <param name="motor3/protocol_version" value="$(arg motor3_protocol_version)"/>
+  <param name="motor3/id"               value="$(arg motor3_id)"/>
+
+  <param name="motor4/device_name"      value="$(arg motor4_device_name)"/>
+  <param name="motor4/baud_rate"        value="$(arg motor4_baud_rate)"/>
+  <param name="motor4/protocol_version" value="$(arg motor4_protocol_version)"/>
+  <param name="motor4/id"               value="$(arg motor4_id)"/>
+
+  <node name="four_dxls_example" pkg="dynamixel_workbench_controllers" type="four_dxls" required="true" output="screen"/>
+</launch>

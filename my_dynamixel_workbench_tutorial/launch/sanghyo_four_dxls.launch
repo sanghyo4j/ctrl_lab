@@ -1,0 +1,48 @@
+<launch>
+    <arg name="motor1_device_name"      default="/dev/ttyUSB0"/>
+    <arg name="motor1_baud_rate"        default="1000000"/>
+    <arg name="motor1_protocol_version" default="2.0"/>
+    <arg name="motor1_id"               default="1"/>
+
+    <arg name="motor2_device_name"      default="/dev/ttyUSB0"/>
+    <arg name="motor2_baud_rate"        default="1000000"/>
+    <arg name="motor2_protocol_version" default="1.0"/>
+    <arg name="motor2_id"               default="2"/>
+    
+    <arg name="motor3_device_name"      default="/dev/ttyUSB0"/>
+    <arg name="motor3_baud_rate"        default="1000000"/>
+    <arg name="motor3_protocol_version" default="1.0"/>
+    <arg name="motor3_id"               default="3"/>
+
+    <arg name="motor4_device_name"      default="/dev/ttyUSB0"/>
+    <arg name="motor4_baud_rate"        default="1000000"/>
+    <arg name="motor4_protocol_version" default="1.0"/>
+    <arg name="motor4_id"               default="4"/>
+
+    <param name="motor1/device_name"      value="$(arg motor1_device_name)"/>
+    <param name="motor1/baud_rate"        value="$(arg motor1_baud_rate)"/>
+    <param name="motor1/protocol_version" value="$(arg motor1_protocol_version)"/>
+    <param name="motor1/id"               value="$(arg motor1_id)"/>
+
+    <param name="motor2/device_name"      value="$(arg motor2_device_name)"/>
+    <param name="motor2/baud_rate"        value="$(arg motor2_baud_rate)"/>
+    <param name="motor2/protocol_version" value="$(arg motor2_protocol_version)"/>
+    <param name="motor2/id"               value="$(arg motor2_id)"/>
+    
+    <param name="motor3/device_name"      value="$(arg motor3_device_name)"/>
+    <param name="motor3/baud_rate"        value="$(arg motor3_baud_rate)"/>
+    <param name="motor3/protocol_version" value="$(arg motor3_protocol_version)"/>
+    <param name="motor3/id"               value="$(arg motor3_id)"/>
+
+    <param name="motor4/device_name"      value="$(arg motor4_device_name)"/>
+    <param name="motor4/baud_rate"        value="$(arg motor4_baud_rate)"/>
+    <param name="motor4/protocol_version" value="$(arg motor4_protocol_version)"/>
+    <param name="motor4/id"               value="$(arg motor4_id)"/>
+
+    <node name="sanghyo_four_dxls_example" pkg="dynamixel_workbench_controllers" type="sanghyo_four_dxls" required="true" output="screen">
+        <rosparam>
+            profile_velocity: 50
+            profile_acceleration: 5
+        </rosparam>
+    </node> 
+</launch>

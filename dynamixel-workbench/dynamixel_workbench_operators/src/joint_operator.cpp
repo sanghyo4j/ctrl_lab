@@ -23,9 +23,9 @@ int main(int argc, char **argv)
   joint_command.request.motor3_pos = atof(argv[4]);
   joint_command.request.motor4_pos = atof(argv[5]);
 
-  if (joint_command_client.call(joint_command))
-  {
-    ROS_INFO("[pan_pos: %.2f (value)] [tilt_pos: %.2f (value)] [motor3_pos: %.2f (value)] [motor4_pos: %.2f (value)]", joint_command.response.pan_pos, joint_command.response.tilt_pos, joint_command.response.motor3_pos, joint_command.response.motor4_pos);
+  if (joint_command_client.call(joint_command))  {
+    ROS_INFO("[pan_pos: %.2f (value)] [tilt_pos: %.2f (value)] [motor3_pos: %.2f (value)] [motor4_pos: %.2f (value)]", 
+		joint_command.response.pan_pos, joint_command.response.tilt_pos, joint_command.response.motor3_pos, joint_command.response.motor4_pos);
   }
   else
   {
